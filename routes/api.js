@@ -41,7 +41,7 @@ router.post("/api/workouts", ({ body }, res) => {
     });
 });
 
-// GET GRAPH
+// GET RANGE - GRAPH
 router.get("/api/workouts/range", (req, res) => {
   db.Workout.find({})
     .then(dbWorkout => {
