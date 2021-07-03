@@ -4,7 +4,6 @@ const db = require("../models");
 // GET WORKOUTS
 router.get("/api/workouts", (req, res) => {
   db.Workout.find({})
-    .sort({ date: -1 })
     .then((workoutDB) => {
       res.json(workoutDB);
     })
@@ -16,9 +15,12 @@ router.get("/api/workouts", (req, res) => {
 // UPDATE WORKOUT
 router.put("/api/workouts/:id", (req, res) => {
   db.Workout.findByIdAndUpdate(
-    params.id,
-    { $push: { exercises: body } },
-    { new: true, runValidators: true }
+    { _id: req.params.id },
+    { 
+      $inc: { totalDuration: req.body.duration },
+      $push: { exercises: req.body } 
+    },
+    { new: true }
   )
     .then((dbWorkout) => {
       res.json(dbWorkout);
@@ -39,6 +41,15 @@ router.post("/api/workouts", ({ body }, res) => {
     });
 });
 
-
+// GET GRAPH
+router.get("/api/workouts/range", (req, res) => {
+  db.Workout.find({})
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
 
 module.exports = router;
