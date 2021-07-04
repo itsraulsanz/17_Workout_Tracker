@@ -43,7 +43,7 @@ router.post("/api/workouts", ({ body }, res) => {
 
 // GET RANGE - GRAPH
 router.get("/api/workouts/range", (req, res) => {
-  db.Workout.find({})
+  db.Workout.find({}).sort({_id: -1}).limit(7)
     .then(dbWorkout => {
       res.json(dbWorkout);
     })
